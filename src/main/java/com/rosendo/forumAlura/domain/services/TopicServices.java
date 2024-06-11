@@ -1,6 +1,5 @@
 package com.rosendo.forumAlura.domain.services;
 
-import com.rosendo.forumAlura.domain.dtos.AnswersRequestDto;
 import com.rosendo.forumAlura.domain.dtos.TopicRequestDto;
 import com.rosendo.forumAlura.domain.enums.EnumState;
 import com.rosendo.forumAlura.domain.models.AnswersModel;
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class TopicServices {
@@ -22,35 +22,52 @@ public class TopicServices {
     @Autowired
     private AnswersRepository answersRepository;
 
-    public TopicModel createTopic(TopicRequestDto topicDto) {
+    public List<TopicModel> getAllTopics(){
+        return topicRepository.findAll();
+    }
+
+    public TopicModel getTopicById(Long id){
+        return topicRepository.findById(id).orElseThrow();
+    }
+
+    public TopicRequestDto createTopic(TopicRequestDto topicDto) {
         var topicModel = new TopicModel();
         var answerModel = new AnswersModel();
 
         BeanUtils.copyProperties(topicDto, topicModel);
         topicModel.setTopicState(EnumState.inProgress);
         topicModel.setDateCreation(LocalDateTime.now());
+
+        if (topicRepository.existsByTitleOrMessage(topicDto.title(), topicDto.message())){
+            throw new RuntimeException("A topic with this title or message already exists");
+        }
+
         topicRepository.save(topicModel);
 
         answerModel.setTopicId(topicModel.getId());
         answerModel.setMessage("");
         answerModel.setAuthor("");
         answersRepository.save(answerModel);
-        return topicModel;
+        return topicDto;
     }
 
-    public AnswersRequestDto createAnswer(AnswersRequestDto answersRequestDto){
-        AnswersModel answer = answersRepository.findById(answersRequestDto.topicId()).orElse(null);
+    public TopicRequestDto updateTopic(Long id, TopicRequestDto topicDto) {
 
-        if(answer.getMessage().isEmpty()){
-            BeanUtils.copyProperties(answersRequestDto, answer);
-            answersRepository.save(answer);
-        }else{
-            AnswersModel newAnswer = new AnswersModel();
-            BeanUtils.copyProperties(answersRequestDto, newAnswer);
-            answersRepository.save(newAnswer);
-        }
+        topicRepository.findById(id).ifPresent(
+                topic -> {
+                    BeanUtils.copyProperties(topicDto, topic);
+                    if (topicRepository.existsByTitleOrMessage(topicDto.title(), topicDto.message())){
+                        throw new RuntimeException("A topic with this title or message already exists");
+                    }
+                    topicRepository.save(topic);
+                }
+        );
 
-        return answersRequestDto;
+        return topicDto;
+    }
+
+    public void deleteTopicById(Long id){
+        topicRepository.deleteById(id);
     }
 
 }

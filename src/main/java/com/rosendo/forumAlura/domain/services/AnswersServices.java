@@ -3,12 +3,50 @@ package com.rosendo.forumAlura.domain.services;
 import com.rosendo.forumAlura.domain.dtos.AnswersRequestDto;
 import com.rosendo.forumAlura.domain.models.AnswersModel;
 import com.rosendo.forumAlura.domain.repositories.AnswersRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AnswersServices {
 
     @Autowired
-    AnswersRepository answersRepository;
+    private AnswersRepository answersRepository;
+
+    public AnswersRequestDto createAnswer(AnswersRequestDto answersRequestDto){
+        AnswersModel answer = answersRepository.findById(answersRequestDto.topicId()).orElse(null);
+
+        if(answer.getMessage().isEmpty()){
+            BeanUtils.copyProperties(answersRequestDto, answer);
+            answersRepository.save(answer);
+        }else{
+            AnswersModel newAnswer = new AnswersModel();
+            BeanUtils.copyProperties(answersRequestDto, newAnswer);
+            answersRepository.save(newAnswer);
+        }
+
+        return answersRequestDto;
+    }
+
+    public AnswersRequestDto updateAnswer(AnswersRequestDto answersRequestDto){
+        AnswersModel answer = answersRepository.findById(answersRequestDto.topicId()).orElse(null);
+        if(answer.getMessage().isEmpty()){
+            BeanUtils.copyProperties(answersRequestDto, answer);
+        }
+        answersRepository.save(answer);
+        return answersRequestDto;
+    }
+
+    public void deleteAnswer(Long id){
+        answersRepository.deleteById(id);
+    }
+
+    public List<AnswersModel> getAnswers(Long id){
+        List<AnswersModel> answers = new ArrayList<>();
+        answersRepository.findById(id).ifPresent(answers::add);
+        return answers;
+    }
 }
