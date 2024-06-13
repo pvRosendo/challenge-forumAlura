@@ -12,4 +12,5 @@ public record TokenDto(
         @NotBlank String accessToken,
         @NotBlank String refreshToken
 ) {
+    
 }
