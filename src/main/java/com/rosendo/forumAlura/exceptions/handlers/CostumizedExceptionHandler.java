@@ -1,8 +1,6 @@
 package com.rosendo.forumAlura.exceptions.handlers;
 
-import com.rosendo.forumAlura.exceptions.ExceptionResponse;
-import com.rosendo.forumAlura.exceptions.InvalidJwtAuthenticationException;
-import com.rosendo.forumAlura.exceptions.ResourceNotFoundException;
+import com.rosendo.forumAlura.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -42,4 +40,30 @@ public class CostumizedExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.FORBIDDEN);
     }
 
+
+    @ExceptionHandler(TitleOrMessageExistException.class)
+    public final ResponseEntity<ExceptionResponse> handleTitleOrMessageExistExceptions(
+            Exception exception, WebRequest webRequest) {
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                exception.getMessage(),
+                new Date(),
+                webRequest.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UsernameExistException.class)
+    public final ResponseEntity<ExceptionResponse> handleUsernameExistExceptions(
+            Exception exception, WebRequest webRequest) {
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                exception.getMessage(),
+                new Date(),
+                webRequest.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
 }
+

@@ -3,6 +3,7 @@ package com.rosendo.forumAlura.domain.services;
 import com.rosendo.forumAlura.domain.dtos.CreateAccountCredentialsDto;
 import com.rosendo.forumAlura.domain.models.UserModel;
 import com.rosendo.forumAlura.domain.repositories.UserRepository;
+import com.rosendo.forumAlura.exceptions.UsernameExistException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -37,11 +38,11 @@ public class UserServices implements UserDetailsService {
         var user = new UserModel();
         var passwordEncoded = passwordEncoder(credentials.password());
 
-//        if(userRepository.findByUsername(credentials.username()) != null){
-//            throw new RuntimeException("This username is already in use!");
-//        }else{
-//        }
-        user.setUserName(credentials.username());
+        if(userRepository.findByUsername(credentials.username()) != null){
+            throw new UsernameExistException("This username is already in use!");
+        }else{
+            user.setUserName(credentials.username());
+        }
         user.setPassword(passwordEncoded);
         user.setAccountNonExpired(true);
         user.setAccountNonLocked(true);

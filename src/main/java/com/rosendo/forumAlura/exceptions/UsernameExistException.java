@@ -1,17 +1,17 @@
 package com.rosendo.forumAlura.exceptions;
 
-import java.io.Serial;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
-public class ResourceNotFoundException extends RuntimeException{
+import java.io.Serial;
+
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+public class UsernameExistException extends RuntimeException{
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public ResourceNotFoundException(String message){
+    public UsernameExistException(String message){
         super(message);
     }
 

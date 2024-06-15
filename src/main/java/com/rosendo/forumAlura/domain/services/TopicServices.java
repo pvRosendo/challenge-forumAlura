@@ -7,6 +7,7 @@ import com.rosendo.forumAlura.domain.models.TopicModel;
 import com.rosendo.forumAlura.domain.repositories.AnswersRepository;
 import com.rosendo.forumAlura.domain.repositories.TopicRepository;
 import com.rosendo.forumAlura.exceptions.ResourceNotFoundException;
+import com.rosendo.forumAlura.exceptions.TitleOrMessageExistException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,7 +45,7 @@ public class TopicServices {
         topicModel.setDateCreation(LocalDateTime.now());
 
         if (topicRepository.existsByTitleOrMessage(topicDto.title(), topicDto.message())){
-            throw new RuntimeException("A topic with this title or message already exists");
+            throw new TitleOrMessageExistException("A topic with this title or message already exists");
         }
 
         topicRepository.save(topicModel);
@@ -63,7 +64,7 @@ public class TopicServices {
                 topic -> {
                     BeanUtils.copyProperties(topicDto, topic);
                     if (topicRepository.existsByTitleOrMessage(topicDto.title(), topicDto.message())){
-                        throw new RuntimeException("A topic with this title or message already exists");
+                        throw new TitleOrMessageExistException("A topic with this title or message already exists");
                     }
                     topicRepository.save(topic);
                 }
