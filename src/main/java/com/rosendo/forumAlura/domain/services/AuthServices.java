@@ -60,8 +60,7 @@ public class AuthServices {
     }
 
     public boolean checkIfParamsIsNotNull(String username, String refreshToken) {
-        return refreshToken == null || refreshToken.isBlank() ||
-                username == null || username.isBlank();
+        return refreshToken == null || refreshToken.isBlank() || username == null || username.isBlank();
     }
 
     public boolean checkIfParamsIsNotNull(AccountCredentialsDto data) {

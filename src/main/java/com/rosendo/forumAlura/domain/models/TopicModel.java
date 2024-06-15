@@ -8,8 +8,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Entity(name = "Topic")
-@Table(name="tb_topic")
+@Entity(name = "Topics")
+@Table(name="tb_topics")
 public class TopicModel implements Serializable {
 
     @Serial

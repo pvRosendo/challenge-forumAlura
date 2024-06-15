@@ -60,10 +60,10 @@ public class SecurityConfig {
                         authorizeHttpRequests -> authorizeHttpRequests
                                 .requestMatchers(
                                         "/auth/signin",
-                                        "/auth/refresh/**"
+                                        "/auth/refresh/**",
+                                        "/auth/user"
                                 ).permitAll()
                                 .requestMatchers("/topics/**").authenticated()
-                                .requestMatchers("/users").denyAll()
                 )
                 .cors(cors -> {})
                 .build();

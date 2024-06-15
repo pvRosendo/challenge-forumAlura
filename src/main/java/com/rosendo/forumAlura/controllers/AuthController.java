@@ -1,7 +1,9 @@
 package com.rosendo.forumAlura.controllers;
 
 import com.rosendo.forumAlura.domain.dtos.AccountCredentialsDto;
+import com.rosendo.forumAlura.domain.dtos.CreateAccountCredentialsDto;
 import com.rosendo.forumAlura.domain.services.AuthServices;
+import com.rosendo.forumAlura.domain.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,14 @@ public class AuthController {
 
     @Autowired
     AuthServices authServices;
+
+    @Autowired
+    UserServices userServices;
+
+    @PostMapping(value = "/user")
+    public ResponseEntity<?> createAccount(@RequestBody CreateAccountCredentialsDto data) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userServices.createUser(data));
+    }
 
     @SuppressWarnings("rawtypes")
     @PostMapping(value = "/signin")

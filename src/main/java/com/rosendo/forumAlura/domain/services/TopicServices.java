@@ -6,6 +6,7 @@ import com.rosendo.forumAlura.domain.models.AnswersModel;
 import com.rosendo.forumAlura.domain.models.TopicModel;
 import com.rosendo.forumAlura.domain.repositories.AnswersRepository;
 import com.rosendo.forumAlura.domain.repositories.TopicRepository;
+import com.rosendo.forumAlura.exceptions.ResourceNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class TopicServices {
 
     @Transactional
     public TopicModel getTopicById(Long id){
-        return topicRepository.findById(id).orElseThrow();
+        return topicRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Don't find topic"));
     }
 
     @Transactional
