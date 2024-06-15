@@ -9,6 +9,7 @@ import com.rosendo.forumAlura.domain.repositories.TopicRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,14 +23,17 @@ public class TopicServices {
     @Autowired
     private AnswersRepository answersRepository;
 
+    @Transactional
     public List<TopicModel> getAllTopics(){
         return topicRepository.findAll();
     }
 
+    @Transactional
     public TopicModel getTopicById(Long id){
         return topicRepository.findById(id).orElseThrow();
     }
 
+    @Transactional
     public TopicRequestDto createTopic(TopicRequestDto topicDto) {
         var topicModel = new TopicModel();
         var answerModel = new AnswersModel();
@@ -51,6 +55,7 @@ public class TopicServices {
         return topicDto;
     }
 
+    @Transactional
     public TopicRequestDto updateTopic(Long id, TopicRequestDto topicDto) {
 
         topicRepository.findById(id).ifPresent(
@@ -66,6 +71,7 @@ public class TopicServices {
         return topicDto;
     }
 
+    @Transactional
     public void deleteTopicById(Long id){
         topicRepository.deleteById(id);
     }

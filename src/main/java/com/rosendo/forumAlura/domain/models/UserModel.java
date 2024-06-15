@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.security.Permission;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
