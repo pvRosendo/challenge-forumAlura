@@ -47,7 +47,9 @@ public class JwtTokenProvider {
         var accessToken = getAccessToken(username, roles, now, validity);
         var refreshToken = getRefreshToken(username, roles, now);
 
-        return new TokenDto(username, true, now, validity, accessToken, refreshToken);
+        var token = new TokenDto(username, true, now, validity, accessToken, refreshToken);
+        System.out.println(token);
+        return token;
     }
 
 
@@ -88,8 +90,7 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String token) {
         DecodedJWT decodedJWT = decodedToken(token);
-        UserDetails userDetails = this.userDetailsService
-                .loadUserByUsername(decodedJWT.getSubject());
+        UserDetails userDetails = this.userDetailsService.loadUserByUsername(decodedJWT.getSubject());
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 

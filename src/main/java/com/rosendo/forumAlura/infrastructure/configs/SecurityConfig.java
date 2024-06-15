@@ -1,5 +1,7 @@
 package com.rosendo.forumAlura.infrastructure.configs;
 
+import java.util.HashMap;
+import java.util.Map;
 
 import com.rosendo.forumAlura.infrastructure.security.jwt.JwtTokenFilter;
 import com.rosendo.forumAlura.infrastructure.security.jwt.JwtTokenProvider;
@@ -18,11 +20,9 @@ import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.util.HashMap;
-import java.util.Map;
 
-@EnableWebSecurity
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
     @Autowired
@@ -42,8 +42,7 @@ public class SecurityConfig {
 
     @Bean
     AuthenticationManager authenticationManagerBean(
-            AuthenticationConfiguration authenticationConfiguration)
-            throws Exception {
+            AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
@@ -64,8 +63,7 @@ public class SecurityConfig {
                                         "/auth/signin",
                                         "/auth/refresh/**"
                                 ).permitAll()
-                                .requestMatchers("/topics").authenticated()
-                                .requestMatchers("/answers").authenticated()
+                                .requestMatchers("/topics/**").authenticated()
                                 .requestMatchers("/users").denyAll()
                 )
                 .cors(cors -> {})

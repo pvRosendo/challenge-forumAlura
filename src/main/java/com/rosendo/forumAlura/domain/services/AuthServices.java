@@ -29,14 +29,20 @@ public class AuthServices {
         try {
             var username = data.username();
             var password = data.password();
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username, password));
+            System.out.println("setando user e password: "+ username + " "+ password);
 
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+
+            System.out.println("procurando no banco o user");
             var user = repository.findByUsername(username);
 
+            System.out.println("criando o novo token");
             var tokenResponse = new TokenDto();
+            System.out.println("novo token: " + tokenResponse.toString());
             if (user != null) {
+                System.out.println("user!= nulo, vou tentar criar o token de acesso");
                 tokenResponse = tokenProvider.createAccessToken(username, user.getRoles());
+                System.out.println("criei o token de acesso: " + tokenResponse.toString());
             } else {
                 throw new UsernameNotFoundException("Username " + username + " not found!");
             }

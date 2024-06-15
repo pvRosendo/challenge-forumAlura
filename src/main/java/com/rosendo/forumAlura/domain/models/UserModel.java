@@ -25,9 +25,6 @@ public class UserModel implements UserDetails, Serializable {
     @Column(name = "user_name", unique = true)
     private String userName;
 
-    @Column(name = "full_name")
-    private String fullName;
-
     @Column(name = "password")
     private String password;
 
@@ -44,7 +41,7 @@ public class UserModel implements UserDetails, Serializable {
     private Boolean enabled;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_permission", joinColumns = {@JoinColumn (name = "id_user")},
+    @JoinTable(name = "tb_user_permission", joinColumns = {@JoinColumn (name = "id_user")},
             inverseJoinColumns = {@JoinColumn (name = "id_permission")}
     )
     private List<PermissionModel> permissions;
@@ -110,13 +107,6 @@ public class UserModel implements UserDetails, Serializable {
         this.userName = userName;
     }
 
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
 
     public Boolean getAccountNonExpired() {
         return accountNonExpired;
